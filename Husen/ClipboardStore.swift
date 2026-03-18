@@ -90,6 +90,12 @@ final class ClipboardStore: ObservableObject {
         save()
     }
 
+    /// すべての仮置きデータを一括削除
+    func clearAll() {
+        items.removeAll()
+        save()
+    }
+
     private func save() {
         guard let data = try? JSONEncoder().encode(items) else { return }
         UserDefaults.standard.set(data, forKey: "husen.clipboard.items")
