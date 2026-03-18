@@ -10,13 +10,22 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // 統合ヘッダー: ClipPad 仮置き場 + 一括削除 + テーマ（上余白はトラフィックライト用）
-            HStack(spacing: 8) {
+            // 統合ヘッダー: 最小高さで 閉じる + ClipPad + テーマ + 一括削除
+            HStack(spacing: 6) {
+                Button {
+                    NSApplication.shared.keyWindow?.close()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .help("閉じる")
                 Text("ClipPad")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 11, weight: .semibold))
                     .foregroundStyle(theme.textSecondary)
                 Text("仮置き場")
-                    .font(.system(size: 11))
+                    .font(.system(size: 10))
                     .foregroundStyle(theme.textTertiary)
                 Spacer()
                 Menu {
@@ -25,7 +34,7 @@ struct ContentView: View {
                     }
                 } label: {
                     Image(systemName: "paintpalette")
-                        .font(.system(size: 12))
+                        .font(.system(size: 10))
                 }
                 .menuStyle(.borderlessButton)
                 .fixedSize()
@@ -35,14 +44,14 @@ struct ContentView: View {
                     selectedId = nil
                 } label: {
                     Image(systemName: "trash")
-                        .font(.system(size: 12))
+                        .font(.system(size: 10))
                 }
                 .buttonStyle(.borderless)
                 .help("一括削除")
             }
-            .padding(.horizontal, 12)
-            .padding(.top, 24)
-            .padding(.bottom, 6)
+            .padding(.horizontal, 10)
+            .padding(.top, 6)
+            .padding(.bottom, 4)
             .background(theme.headerBackground)
 
             Divider()
