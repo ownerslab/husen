@@ -22,8 +22,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func setupWindow(_ window: NSWindow) {
         window.level = .floating
         window.collectionBehavior = [.canJoinAllSpaces]
-        // 位置を復元しない（画面外に復元されるのを防ぐ）
         window.isRestorable = false
+        // 閉じるボタンを無効化＝ウィンドウを破棄しない。終了は ⌘Q または メニュー「Husen → 終了」
+        window.styleMask = [.titled, .miniaturizable, .resizable]
         NSApp.setActivationPolicy(.regular)
     }
 

@@ -16,9 +16,17 @@ struct ContentView: View {
                     .font(.headline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text("ドラッグで並べ替え")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                Button {
+                    store.clearAll()
+                    selectedId = nil
+                } label: {
+                    Image(systemName: "trash")
+                    Text("一括削除")
+                        .font(.caption)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .help("仮置き中のメモをすべて削除")
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
