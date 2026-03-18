@@ -20,11 +20,11 @@ final class ThemeStore: ObservableObject {
     }
 
     @Published var current: Theme {
-        didSet { UserDefaults.standard.set(current.rawValue, forKey: "husen.theme") }
+        didSet { UserDefaults.standard.set(current.rawValue, forKey: "clippad.theme") }
     }
 
     private init() {
-        let raw = UserDefaults.standard.string(forKey: "husen.theme") ?? Theme.system.rawValue
+        let raw = UserDefaults.standard.string(forKey: "clippad.theme") ?? Theme.system.rawValue
         self.current = Theme(rawValue: raw) ?? .system
     }
 

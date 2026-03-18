@@ -1,4 +1,4 @@
-# Husen（仮置き場）
+# ClipPad（仮置き場）
 
 Mac 用の「常に最前面」付箋メモアプリ。WEB や他アプリでコピーしたテキストを仮保存し、すぐ貼り付けできる仮置き場として使います。
 
@@ -14,7 +14,7 @@ Mac 用の「常に最前面」付箋メモアプリ。WEB や他アプリでコ
 ### Xcode で開くとは
 
 1. **Finder** でこのフォルダ（`husen`）を開く
-2. **`Husen.xcodeproj`** をダブルクリックする  
+2. **`Husen.xcodeproj`**（または `ClipPad` スキーム）をダブルクリックする  
    - 青いアイコンの「プロジェクト」ファイル（フォルダのように見えますが 1 つのファイルです）
    - これで **Xcode が起動し、プロジェクトが開く**想定です
 3. Xcode が開いたら、メニュー **Product → Run**（またはキーボード **⌘R**）でビルド＆実行
@@ -35,7 +35,7 @@ Mac 用の「常に最前面」付箋メモアプリ。WEB や他アプリでコ
 
 ```bash
 cd /path/to/husen
-xcodebuild -scheme Husen -configuration Release -destination 'platform=macOS' build
+xcodebuild -scheme ClipPad -configuration Release -destination 'platform=macOS' build
 # ビルド後は Xcode の DerivedData に .app ができます。Xcode で Run するのが簡単です
 ```
 
@@ -43,16 +43,16 @@ xcodebuild -scheme Husen -configuration Release -destination 'platform=macOS' bu
 
 **方法: GitHub でクラウドビルドし、できた .app だけダウンロードする**
 
-あなたの Mac に Xcode は一切不要です。GitHub のサーバー（Mac）でビルドし、**完成した Husen.app をダウンロードして使う**だけです。
+あなたの Mac に Xcode は一切不要です。GitHub のサーバー（Mac）でビルドし、**完成した ClipPad.app をダウンロードして使う**だけです。
 
 1. このフォルダ（`husen`）を **GitHub のリポジトリ** にプッシュする（Git が未導入の場合は「Git で管理」してから GitHub に上げる）
 2. プッシュすると **GitHub Actions** が自動でビルドを開始する
-3. 完了後、リポジトリの **Actions** タブ → 直近の「Build Husen for macOS」→ **Artifacts** から **Husen-macOS** をダウンロード
-4. ダウンロードした中にある **`Husen-macOS.zip`** を解凍すると **Husen.app** が出てくるので、アプリフォルダなどに置いてダブルクリックで起動
+3. 完了後、リポジトリの **Actions** タブ → 直近の「Build ClipPad for macOS」→ **Artifacts** から **ClipPad-macOS** をダウンロード
+4. ダウンロードした中にある **`ClipPad-macOS.zip`** を解凍すると **ClipPad.app** が出てくるので、アプリフォルダなどに置いてダブルクリックで起動
 
 これなら **あなたの PC の空き容量はほとんど使わず**、同じ付箋メモアプリをそのまま使えます。ビルド用のワークフローは `.github/workflows/build-mac.yml` に用意済みです。
 
-※ GitHub アカウントがない場合は、知人や別の Mac（Xcode 入り）で一度だけビルドしてもらい、Husen.app をもらって使う方法もあります。
+※ GitHub アカウントがない場合は、知人や別の Mac（Xcode 入り）で一度だけビルドしてもらい、ClipPad.app をもらって使う方法もあります。
 
 **GitHub にプッシュする手順（初回のみ）**
 
@@ -68,7 +68,7 @@ git remote add origin https://github.com/YOUR_USERNAME/husen.git
 git push -u origin main
 ```
 
-6. プッシュ後、リポジトリの **Actions** タブでビルドが走り、数分で **Husen-macOS** の Artifact がダウンロードできるようになります。
+6. プッシュ後、リポジトリの **Actions** タブでビルドが走り、数分で **ClipPad-macOS** の Artifact がダウンロードできるようになります。
 
 ## 主な機能
 
@@ -87,4 +87,4 @@ git push -u origin main
 4. ウィンドウはタイトルバー（「仮置き場」のバー）をつかんでドラッグすると移動できます
 5. 「編集」を押すと一覧の並べ替えができます
 
-※  Dock には表示されない設定（アクセサリ）です。終了する場合はメニューバー「Husen → Quit」または ⌘Q で終了してください。
+※  Dock には表示されない設定（アクセサリ）です。終了する場合はメニューバー「ClipPad → Quit」または ⌘Q で終了してください。

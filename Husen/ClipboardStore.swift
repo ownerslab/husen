@@ -98,11 +98,11 @@ final class ClipboardStore: ObservableObject {
 
     private func save() {
         guard let data = try? JSONEncoder().encode(items) else { return }
-        UserDefaults.standard.set(data, forKey: "husen.clipboard.items")
+        UserDefaults.standard.set(data, forKey: "clippad.clipboard.items")
     }
 
     private func load() {
-        guard let data = UserDefaults.standard.data(forKey: "husen.clipboard.items"),
+        guard let data = UserDefaults.standard.data(forKey: "clippad.clipboard.items"),
               let decoded = try? JSONDecoder().decode([ClipItem].self, from: data) else { return }
         items = decoded
     }

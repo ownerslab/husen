@@ -1,5 +1,5 @@
 # Xcode なしでビルドする用: GitHub にプッシュするとクラウドでビルドし、.app をダウンロードできる
-name: Build Husen for macOS
+name: Build ClipPad for macOS
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
 
           # xcodebuild が失敗してもログを残すため、一度 continue して最後に失敗扱いにする
           set +e
-          xcodebuild -scheme Husen -configuration Release \
+          xcodebuild -scheme ClipPad -configuration Release \
             -destination 'platform=macOS' \
             -derivedDataPath build/DerivedData \
             -resultBundlePath build/result.xcresult \
@@ -39,27 +39,27 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: Husen-build-logs
+          name: ClipPad-build-logs
           path: |
             build/xcodebuild.log
             build/result.xcresult
 
-      - name: Prepare Husen.app zip
+      - name: Prepare ClipPad.app zip
         if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         run: |
           mkdir -p artifact
-          cp -R build/DerivedData/Build/Products/Release/Husen.app artifact/
-          ditto -c -k --sequesterRsrc --keepParent artifact/Husen.app artifact/Husen-macOS.zip
+          cp -R build/DerivedData/Build/Products/Release/ClipPad.app artifact/
+          ditto -c -k --sequesterRsrc --keepParent artifact/ClipPad.app artifact/ClipPad-macOS.zip
 
-      - name: Upload Husen-macOS.zip
+      - name: Upload ClipPad-macOS.zip
         if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         uses: actions/upload-artifact@v4
         with:
-          name: Husen-macOS
-          path: artifact/Husen-macOS.zip
+          name: ClipPad-macOS
+          path: artifact/ClipPad-macOS.zip
 
       - name: Fail workflow if build failed
         if: ${{ steps.xcodebuild.outputs.exit_code != '0' }}
         run: |
-          echo "Failing workflow because xcodebuild failed (see Husen-build-logs artifact)."
+          echo "Failing workflow because xcodebuild failed (see ClipPad-build-logs artifact)."
           exit 1

@@ -10,9 +10,9 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // 統合ヘッダー: Husen 仮置き場 + 一括削除 + テーマ
+            // 統合ヘッダー: ClipPad 仮置き場 + 一括削除 + テーマ（上余白はトラフィックライト用）
             HStack(spacing: 8) {
-                Text("Husen")
+                Text("ClipPad")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(theme.textSecondary)
                 Text("仮置き場")
@@ -41,7 +41,8 @@ struct ContentView: View {
                 .help("一括削除")
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 6)
+            .padding(.top, 24)
+            .padding(.bottom, 6)
             .background(theme.headerBackground)
 
             Divider()
