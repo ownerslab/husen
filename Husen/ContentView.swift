@@ -6,6 +6,7 @@ struct ContentView: View {
     @StateObject private var store = ClipboardStore.shared
     @State private var selectedId: ClipItem.ID?
     @State private var manualInput = ""
+    @Environment(\.editMode) private var editMode
 
     var body: some View {
         VStack(spacing: 0) {
@@ -15,8 +16,16 @@ struct ContentView: View {
                     .font(.headline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                EditButton()
-                    .buttonStyle(.borderless)
+                Button(editMode?.wrappedValue.isEditing == true ? "完了" : "編集") {
+                    withAnimation(.snappy) {
+                        if editMode?.wrappedValue.isEditing == true {
+                            editMode?.wrappedValue = .inactive
+                        } else {
+                            editMode?.wrappedValue = .active
+                        }
+                    }
+                }
+                .buttonStyle(.borderless)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
