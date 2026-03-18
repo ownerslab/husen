@@ -9,6 +9,5 @@ struct ClipPadApp: App {
             ContentView()
                 .frame(minWidth: 280, minHeight: 200)
         }
-        .windowStyle(.hiddenTitleBar)
     }
 }

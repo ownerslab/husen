@@ -17,8 +17,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         window.level = .floating
         window.collectionBehavior = [.canJoinAllSpaces]
         window.isRestorable = false
-        // 付箋風：.hiddenTitleBar でシルバーバー非表示、ドラッグで移動
         window.isMovableByWindowBackground = true
+        // シルバーバーを消す：タイトルバー透過＋トラフィックライト非表示（自前の×で閉じる）
+        window.styleMask.insert(.fullSizeContentView)
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.backgroundColor = .windowBackgroundColor
+        window.standardWindowButton(.closeButton)?.isHidden = true
+        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+        window.standardWindowButton(.zoomButton)?.isHidden = true
         window.makeKeyAndOrderFront(nil)
     }
 
