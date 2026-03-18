@@ -29,19 +29,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// ウィンドウが画面外ならメイン画面の見える位置に移動する
     private func ensureWindowOnScreen(_ window: NSWindow) {
-        guard let screen = NSScreen.main ?? NSScreen.screens.first else { return }
-        let visible = screen.visibleFrame
+        guard let mainScreen = NSScreen.main ?? NSScreen.screens.first else { return }
+        let visible = mainScreen.visibleFrame
         var frame = window.frame
 
         // 現在のフレームがどの画面とも交差していなければ、メイン画面に置く
-        let onAnyScreen = NSScreen.screens.contains { screen.frame.intersects(frame) }
-        if !onAnyScreen || frame.isEmpty {
-            let width = max(320, min(frame.width, visible.width * 0.8))
-            let height = max(300, min(frame.height, visible.height * 0.6))
-            frame.size = NSSize(width: width, height: height)
-            frame.origin.x = visible.midX - frame.width / 2
-            frame.origin.y = visible.midY - frame.height / 2
-            window.setFrame(frame, display: true)
+        let onAnyScreen = NSScreen.screens.contains { scr in scr.frame.intersects(frame) }
+        if !onAnyScreen || frame.size.width < 100 || frame.size.height < 100 {
+            let w = max(320.0, min(frame.size.width, visible.size.width * 0.8))
+            let h = max(300.0, min(frame.size.height, visible.size.height * 0.6))
+            let x = visible.midX - w / 2
+            let y = visible.midY - h / 2
+            window.setFrame(CGRect(x: x, y: y, width: w, height: h), display: true)
         }
 
         if window.isMiniaturized {
