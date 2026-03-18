@@ -13,6 +13,7 @@
 		HUSEN004 /* ClipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN104; };
 		HUSEN005 /* ClipboardStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN105; };
 		HUSEN006 /* ThemeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN106; };
+		HUSEN007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = HUSEN107; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		HUSEN104 /* ClipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipItem.swift; sourceTree = "<group>"; };
 		HUSEN105 /* ClipboardStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardStore.swift; sourceTree = "<group>"; };
 		HUSEN106 /* ThemeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeStore.swift; sourceTree = "<group>"; };
+		HUSEN107 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 				HUSEN104 /* ClipItem.swift */,
 				HUSEN105 /* ClipboardStore.swift */,
 				HUSEN106 /* ThemeStore.swift */,
+				HUSEN107 /* Assets.xcassets */,
 				HUSEN303 /* Info.plist */,
 			);
 			path = Husen;
@@ -120,6 +123,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				HUSEN007 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +203,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Husen/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "個人利用";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -223,6 +228,7 @@
 				DEVELOPMENT_ASSET_PATHS = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Husen/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "個人利用";
 				LD_RUNPATH_SEARCH_PATHS = (
