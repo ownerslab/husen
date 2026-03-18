@@ -17,7 +17,7 @@ struct ContentView: View {
                     .foregroundStyle(.secondary)
                 Spacer()
                 Button {
-                    store.clearAll()
+                    ClipboardStore.shared.clearAll()
                     selectedId = nil
                 } label: {
                     Image(systemName: "trash")
