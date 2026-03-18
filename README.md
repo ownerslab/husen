@@ -47,12 +47,28 @@ xcodebuild -scheme Husen -configuration Release -destination 'platform=macOS' bu
 
 1. このフォルダ（`husen`）を **GitHub のリポジトリ** にプッシュする（Git が未導入の場合は「Git で管理」してから GitHub に上げる）
 2. プッシュすると **GitHub Actions** が自動でビルドを開始する
-3. 完了後、リポジトリの **Actions** タブ → 直近の「Build Husen for macOS」→ **Artifacts** から **Husen-macOS** をダウンロード（ZIP）
-4. ZIP を解凍すると **Husen.app** が出てくるので、アプリフォルダなどに置いてダブルクリックで起動
+3. 完了後、リポジトリの **Actions** タブ → 直近の「Build Husen for macOS」→ **Artifacts** から **Husen-macOS** をダウンロード
+4. ダウンロードした中にある **`Husen-macOS.zip`** を解凍すると **Husen.app** が出てくるので、アプリフォルダなどに置いてダブルクリックで起動
 
 これなら **あなたの PC の空き容量はほとんど使わず**、同じ付箋メモアプリをそのまま使えます。ビルド用のワークフローは `.github/workflows/build-mac.yml` に用意済みです。
 
 ※ GitHub アカウントがない場合は、知人や別の Mac（Xcode 入り）で一度だけビルドしてもらい、Husen.app をもらって使う方法もあります。
+
+**GitHub にプッシュする手順（初回のみ）**
+
+1. [GitHub](https://github.com/new) で **New repository** を開く
+2. **Repository name** に `husen`（または任意の名前）を入力
+3. **Public** を選び、**「Add a README file」にチェックを入れない**（既にローカルにあるため）
+4. **Create repository** をクリック
+5. 作成されたページに「…or push an existing repository from the command line」と出ているので、その中の **2 行**をターミナルで実行する（`YOUR_USERNAME` はあなたの GitHub ユーザー名に置き換え）:
+
+```bash
+cd /Users/shoheiyamada/Desktop/husen
+git remote add origin https://github.com/YOUR_USERNAME/husen.git
+git push -u origin main
+```
+
+6. プッシュ後、リポジトリの **Actions** タブでビルドが走り、数分で **Husen-macOS** の Artifact がダウンロードできるようになります。
 
 ## 主な機能
 

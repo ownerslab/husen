@@ -44,18 +44,20 @@ jobs:
             build/xcodebuild.log
             build/result.xcresult
 
-      - name: Copy .app to artifact
+      - name: Prepare Husen.app zip
         if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         run: |
           mkdir -p artifact
           cp -R build/DerivedData/Build/Products/Release/Husen.app artifact/
+          # Finder で確実に .app として扱われるよう、ditto で ZIP 化して配布する
+          ditto -c -k --sequesterRsrc --keepParent artifact/Husen.app artifact/Husen-macOS.zip
 
-      - name: Upload Husen.app
+      - name: Upload Husen-macOS.zip
         if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         uses: actions/upload-artifact@v4
         with:
           name: Husen-macOS
-          path: artifact/Husen.app
+          path: artifact/Husen-macOS.zip
 
       - name: Fail workflow if build failed
         if: ${{ steps.xcodebuild.outputs.exit_code != '0' }}
