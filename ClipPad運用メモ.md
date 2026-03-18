@@ -24,10 +24,10 @@
 
 ### 2.1 ローカルの構成
 
-- プロジェクトルート: `/Users/shoheiyamada/Desktop/husen`
+- プロジェクトルート: `/Users/shoheiyamada/Desktop/clippad`
 - 主なファイル:
-  - `Husen/` … macOS アプリ本体（SwiftUI + AppKit）
-  - `Husen.xcodeproj/` … Xcode プロジェクト
+  - `ClipPad/` … macOS アプリ本体（SwiftUI + AppKit）
+  - `ClipPad.xcodeproj/` … Xcode プロジェクト
   - `docs/requirements.md` … 要件定義書
   - `.github/workflows/build-mac.yml` … GitHub Actions でのビルド定義
   - `README.md` … ビルドと利用手順の説明
@@ -36,15 +36,15 @@
 
 1. プロジェクトフォルダで Git 初期化・コミット（済み）  
    ```bash
-   cd /Users/shoheiyamada/Desktop/husen
+   cd /Users/shoheiyamada/Desktop/clippad
    git init
    git add .
-   git commit -m "Initial commit: Husen 付箋メモアプリ（常時最前面・仮ペースト用）"
+   git commit -m "Initial commit: ClipPad 付箋メモアプリ（常時最前面・仮ペースト用）"
    ```
 
-2. GitHub にリポジトリ `ownerslab/husen` を作成し、リモート登録・プッシュ  
+2. GitHub にリポジトリ `ownerslab/clippad` を作成し、リモート登録・プッシュ  
    ```bash
-   git remote add origin https://github.com/ownerslab/husen.git
+   git remote add origin https://github.com/ownerslab/clippad.git
    git push -u origin main
    ```
 
@@ -68,8 +68,8 @@
 
 ### 3.1 Artifact からの取得
 
-1. GitHub の `ownerslab/husen` リポジトリ → **Actions** タブ
-2. 最新の成功ジョブ **"CI: distribute ClipPad.app as ditto zip"** を開く
+1. GitHub の `ownerslab/clippad` リポジトリ → **Actions** タブ
+2. 最新の成功ジョブ **"Build ClipPad for macOS"** を開く
 3. **Artifacts → ClipPad-macOS** をクリックしてダウンロード
 4. ダウンロードした ZIP 内の `ClipPad-macOS.zip` を解凍  
    → `ClipPad.app` が得られる
@@ -202,13 +202,13 @@
 
 ### 7.1 結論
 
-- GitHub の `ownerslab/husen` リポジトリと Actions が残っていれば、**新しい Mac でも同じ ClipPad を再度使える**。
+- GitHub の `ownerslab/clippad` リポジトリと Actions が残っていれば、**新しい Mac でも同じ ClipPad を再度使える**。
 - 基本の流れは  
   **「GitHub から Artifact をダウンロード → ClipPad.app を解凍 → /Applications に入れる」** だけ。
 
 ### 7.2 新しい Mac での最小手順（Xcode 不要）
 
-1. ブラウザで `ownerslab/husen` を開く。
+1. ブラウザで `ownerslab/clippad` を開く。
 2. **Actions タブ** → 最新の成功ジョブ `CI: distribute ClipPad.app as ditto zip` を開く。
 3. 右側（または下部）の **Artifacts → ClipPad-macOS** をダウンロード。
 4. ダウンロードした ZIP (`ClipPad-macOS.zip`) を解凍。  
@@ -230,10 +230,10 @@
 1. 新しい Mac でターミナルを開き、任意のフォルダ（例: デスクトップ）へ移動:
    ```bash
    cd ~/Desktop
-   git clone https://github.com/ownerslab/husen.git
+   git clone https://github.com/ownerslab/clippad.git
    ```
-2. これで `~/Desktop/husen` に現在のプロジェクト一式（`Husen運用メモ.md` も含む）が取れる。
-3. Xcode をインストール済みなら、`Husen.xcodeproj` を開いてそのまま開発を継続できる。  
+2. これで `~/Desktop/clippad` に現在のプロジェクト一式（`ClipPad運用メモ.md` も含む）が取れる。
+3. Xcode をインストール済みなら、`ClipPad.xcodeproj` を開いてそのまま開発を継続できる。  
    （使うだけなら、Actions → Artifact → ClipPad.app の方式だけで十分。）
 
 

@@ -17,7 +17,7 @@
                BlueprintIdentifier = "HUSEN400"
                BuildableName = "ClipPad.app"
                BlueprintName = "ClipPad"
-               ReferencedContainer = "container:Husen.xcodeproj">
+               ReferencedContainer = "container:ClipPad.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,7 +46,7 @@
             BlueprintIdentifier = "HUSEN400"
             BuildableName = "ClipPad.app"
             BlueprintName = "ClipPad"
-            ReferencedContainer = "container:Husen.xcodeproj">
+            ReferencedContainer = "container:ClipPad.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -63,7 +63,7 @@
             BlueprintIdentifier = "HUSEN400"
             BuildableName = "ClipPad.app"
             BlueprintName = "ClipPad"
-            ReferencedContainer = "container:Husen.xcodeproj">
+            ReferencedContainer = "container:ClipPad.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
