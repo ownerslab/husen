@@ -14,6 +14,7 @@
 		HUSEN005 /* ClipboardStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN105; };
 		HUSEN006 /* ThemeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN106; };
 		HUSEN007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = HUSEN107; };
+		HUSEN008 /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN108; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		HUSEN105 /* ClipboardStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardStore.swift; sourceTree = "<group>"; };
 		HUSEN106 /* ThemeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeStore.swift; sourceTree = "<group>"; };
 		HUSEN107 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		HUSEN108 /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				HUSEN101 /* ClipPadApp.swift */,
+				HUSEN108 /* BorderlessWindow.swift */,
 				HUSEN103 /* AppDelegate.swift */,
 				HUSEN102 /* ContentView.swift */,
 				HUSEN104 /* ClipItem.swift */,
@@ -140,6 +143,7 @@
 				HUSEN004 /* ClipItem.swift in Sources */,
 				HUSEN005 /* ClipboardStore.swift in Sources */,
 				HUSEN006 /* ThemeStore.swift in Sources */,
+				HUSEN008 /* BorderlessWindow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

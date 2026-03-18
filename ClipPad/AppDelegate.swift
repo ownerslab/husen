@@ -1,32 +1,39 @@
 import AppKit
 import SwiftUI
 
-/// 常に最前面（F-01）・ウィンドウレベル設定
+/// 常に最前面（F-01）・純正 Stickies 風枠なしウィンドウ
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    private var mainWindow: BorderlessWindow?
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
-        // ウィンドウは SwiftUI が遅延生成するため、次のランループで設定
-        DispatchQueue.main.async { [weak self] in
-            self?.configureWindow()
-        }
+        createMainWindow()
     }
 
-    private func configureWindow() {
-        guard let window = NSApplication.shared.windows.first else { return }
+    private func createMainWindow() {
+        let content = ContentView()
+            .frame(minWidth: 280, minHeight: 200)
+        let hosting = NSHostingView(rootView: content)
+
+        let window = BorderlessWindow(
+            contentRect: NSRect(x: 100, y: 400, width: 300, height: 280),
+            styleMask: [.borderless, .resizable],
+            backing: .buffered,
+            defer: false
+        )
+        hosting.autoresizingMask = [.width, .height]
+        window.contentView = hosting
         window.level = .floating
         window.collectionBehavior = [.canJoinAllSpaces]
         window.isRestorable = false
         window.isMovableByWindowBackground = true
-        // シルバーバーを消す：タイトルバー透過＋トラフィックライト非表示（自前の×で閉じる）
-        window.styleMask.insert(.fullSizeContentView)
-        window.titlebarAppearsTransparent = true
-        window.titleVisibility = .hidden
         window.backgroundColor = .windowBackgroundColor
-        window.standardWindowButton(.closeButton)?.isHidden = true
-        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
-        window.standardWindowButton(.zoomButton)?.isHidden = true
+        window.hasShadow = true
+        window.isOpaque = true
+        window.minSize = NSSize(width: 280, height: 200)
         window.makeKeyAndOrderFront(nil)
+        mainWindow = window
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -34,7 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        if let window = sender.windows.first {
+        if let window = mainWindow {
             if window.isMiniaturized { window.deminiaturize(nil) }
             NSApp.activate(ignoringOtherApps: true)
             window.makeKeyAndOrderFront(nil)
