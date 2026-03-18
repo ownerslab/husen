@@ -1,0 +1,31 @@
+# Xcode なしでビルドする用: GitHub にプッシュするとクラウドでビルドし、.app をダウンロードできる
+name: Build Husen for macOS
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Release
+        run: |
+          xcodebuild -scheme Husen -configuration Release \
+            -destination 'platform=macOS' \
+            -derivedDataPath build/DerivedData \
+            build
+
+      - name: Copy .app to artifact
+        run: |
+          mkdir -p artifact
+          cp -R build/DerivedData/Build/Products/Release/Husen.app artifact/
+
+      - name: Upload Husen.app
+        uses: actions/upload-artifact@v4
+        with:
+          name: Husen-macOS
+          path: artifact/Husen.app

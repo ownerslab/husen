@@ -1,0 +1,260 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		HUSEN001 /* HusenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN101; };
+		HUSEN002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN102; };
+		HUSEN003 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN103; };
+		HUSEN004 /* ClipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN104; };
+		HUSEN005 /* ClipboardStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN105; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		HUSEN100 /* Husen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Husen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		HUSEN101 /* HusenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HusenApp.swift; sourceTree = "<group>"; };
+		HUSEN102 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		HUSEN103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		HUSEN104 /* ClipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipItem.swift; sourceTree = "<group>"; };
+		HUSEN105 /* ClipboardStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		HUSEN200 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		HUSEN300 = {
+			isa = PBXGroup;
+			children = (
+				HUSEN301 /* Husen */,
+				HUSEN302 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		HUSEN301 /* Husen */ = {
+			isa = PBXGroup;
+			children = (
+				HUSEN101 /* HusenApp.swift */,
+				HUSEN103 /* AppDelegate.swift */,
+				HUSEN102 /* ContentView.swift */,
+				HUSEN104 /* ClipItem.swift */,
+				HUSEN105 /* ClipboardStore.swift */,
+				HUSEN303 /* Info.plist */,
+			);
+			path = Husen;
+			sourceTree = "<group>";
+		};
+		HUSEN302 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				HUSEN100 /* Husen.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		HUSEN303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		HUSEN400 /* Husen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = HUSEN501;
+			buildPhases = (
+				HUSEN401 /* Sources */,
+				HUSEN200 /* Frameworks */,
+				HUSEN402 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Husen;
+			productName = Husen;
+			productReference = HUSEN100 /* Husen.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		HUSEN500 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = HUSEN502;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ja;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ja,
+				Base,
+			);
+			mainGroup = HUSEN300;
+			productRefGroup = HUSEN302 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				HUSEN400 /* Husen */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		HUSEN402 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		HUSEN401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				HUSEN001 /* HusenApp.swift in Sources */,
+				HUSEN002 /* ContentView.swift in Sources */,
+				HUSEN003 /* AppDelegate.swift in Sources */,
+				HUSEN004 /* ClipItem.swift in Sources */,
+				HUSEN005 /* ClipboardStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		HUSEN601 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		HUSEN602 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		HUSEN603 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Husen/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "個人利用";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.husen.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		HUSEN604 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Husen/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "個人利用";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.husen.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		HUSEN501 /* Build configuration list for PBXNativeTarget "Husen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				HUSEN603 /* Debug */,
+				HUSEN604 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		HUSEN502 /* Build configuration list for PBXProject "Husen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				HUSEN601 /* Debug */,
+				HUSEN602 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = HUSEN500 /* Project object */;
+}
