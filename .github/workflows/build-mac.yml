@@ -12,21 +12,53 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Release (no code signing)
+      - name: Build Release (no code signing, keep logs)
+        id: xcodebuild
+        shell: bash
         run: |
+          set -euo pipefail
+          mkdir -p build
+
+          # xcodebuild が失敗してもログを残すため、一度 continue して最後に失敗扱いにする
+          set +e
           xcodebuild -scheme Husen -configuration Release \
             -destination 'platform=macOS' \
             -derivedDataPath build/DerivedData \
+            -resultBundlePath build/result.xcresult \
             CODE_SIGNING_ALLOWED=NO \
-            build
+            build 2>&1 | tee build/xcodebuild.log
+          exit_code=${PIPESTATUS[0]}
+          set -e
+
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          if [ "$exit_code" -ne 0 ]; then
+            echo "xcodebuild failed with exit code $exit_code (log will be uploaded)"
+          fi
+
+      - name: Upload build logs (always)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Husen-build-logs
+          path: |
+            build/xcodebuild.log
+            build/result.xcresult
 
       - name: Copy .app to artifact
+        if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         run: |
           mkdir -p artifact
           cp -R build/DerivedData/Build/Products/Release/Husen.app artifact/
 
       - name: Upload Husen.app
+        if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         uses: actions/upload-artifact@v4
         with:
           name: Husen-macOS
           path: artifact/Husen.app
+
+      - name: Fail workflow if build failed
+        if: ${{ steps.xcodebuild.outputs.exit_code != '0' }}
+        run: |
+          echo "Failing workflow because xcodebuild failed (see Husen-build-logs artifact)."
+          exit 1
