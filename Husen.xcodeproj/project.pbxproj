@@ -12,6 +12,7 @@
 		HUSEN003 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN103; };
 		HUSEN004 /* ClipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN104; };
 		HUSEN005 /* ClipboardStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN105; };
+		HUSEN006 /* ThemeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN106; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		HUSEN103 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		HUSEN104 /* ClipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipItem.swift; sourceTree = "<group>"; };
 		HUSEN105 /* ClipboardStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardStore.swift; sourceTree = "<group>"; };
+		HUSEN106 /* ThemeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 				HUSEN102 /* ContentView.swift */,
 				HUSEN104 /* ClipItem.swift */,
 				HUSEN105 /* ClipboardStore.swift */,
+				HUSEN106 /* ThemeStore.swift */,
 				HUSEN303 /* Info.plist */,
 			);
 			path = Husen;
@@ -132,6 +135,7 @@
 				HUSEN003 /* AppDelegate.swift in Sources */,
 				HUSEN004 /* ClipItem.swift in Sources */,
 				HUSEN005 /* ClipboardStore.swift in Sources */,
+				HUSEN006 /* ThemeStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

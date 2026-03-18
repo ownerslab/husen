@@ -4,56 +4,53 @@ import AppKit
 /// メインの一覧UI（要件 F-04, F-05, F-07 / 案A: 一覧形式）
 struct ContentView: View {
     @StateObject private var store = ClipboardStore.shared
+    @ObservedObject private var theme = ThemeStore.shared
     @State private var selectedId: ClipItem.ID?
-    @State private var manualInput = ""
     @State private var draggedId: ClipItem.ID?
 
     var body: some View {
         VStack(spacing: 0) {
-            // タイトルバー代わり・ドラッグ用（F-03: つまんで動かす）
-            HStack {
+            // 統合ヘッダー: Husen 仮置き場 + 一括削除 + テーマ
+            HStack(spacing: 8) {
+                Text("Husen")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(theme.textSecondary)
                 Text("仮置き場")
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 11))
+                    .foregroundStyle(theme.textTertiary)
                 Spacer()
+                Menu {
+                    ForEach(ThemeStore.Theme.allCases, id: \.self) { t in
+                        Button(t.displayName) { theme.current = t }
+                    }
+                } label: {
+                    Image(systemName: "paintpalette")
+                        .font(.system(size: 12))
+                }
+                .menuStyle(.borderlessButton)
+                .fixedSize()
+                .help("テーマを変更")
                 Button {
                     ClipboardStore.shared.clearAll()
                     selectedId = nil
                 } label: {
                     Image(systemName: "trash")
-                    Text("一括削除")
-                        .font(.caption)
+                        .font(.system(size: 12))
                 }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-                .help("仮置き中のメモをすべて削除")
+                .buttonStyle(.borderless)
+                .help("一括削除")
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 8)
-            .background(Color(nsColor: .windowBackgroundColor))
+            .padding(.vertical, 6)
+            .background(theme.headerBackground)
 
             Divider()
-
-            // 手動追加（任意）
-            HStack {
-                TextField("貼り付けて追加", text: $manualInput, axis: .vertical)
-                    .textFieldStyle(.plain)
-                    .lineLimit(2...4)
-                Button("追加") {
-                    store.addItem(text: manualInput)
-                    manualInput = ""
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(manualInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-            }
-            .padding(8)
-
-            Divider()
+                .background(theme.dividerColor)
 
             // 一覧（クリックでクリップボードに戻す / ドラッグで並べ替え）
             List(selection: $selectedId) {
                 ForEach(store.items) { item in
-                    ClipRowView(item: item, isSelected: selectedId == item.id)
+                    ClipRowView(item: item, isSelected: selectedId == item.id, theme: theme)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             selectedId = item.id
@@ -79,7 +76,10 @@ struct ContentView: View {
                 }
             }
             .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .background(theme.listBackground)
         }
+        .background(theme.listBackground)
         .frame(minWidth: 280, minHeight: 200)
     }
 }
@@ -107,14 +107,15 @@ private struct ClipReorderDropDelegate: DropDelegate {
 struct ClipRowView: View {
     let item: ClipItem
     let isSelected: Bool
+    @ObservedObject var theme: ThemeStore
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(item.preview)
-                .font(.system(.body, design: .default))
+                .font(theme.rowFont)
                 .lineLimit(2)
                 .truncationMode(.tail)
-                .foregroundColor(isSelected ? .accentColor : .primary)
+                .foregroundColor(isSelected ? theme.accentColor : theme.rowTextColor)
         }
         .padding(.vertical, 4)
         .frame(maxWidth: .infinity, alignment: .leading)
