@@ -44,12 +44,13 @@ jobs:
             build/xcodebuild.log
             build/result.xcresult
 
-      - name: Prepare Husen.app zip
+      - name: Prepare Husen.app (ad-hoc sign and zip)
         if: ${{ steps.xcodebuild.outputs.exit_code == '0' }}
         run: |
           mkdir -p artifact
           cp -R build/DerivedData/Build/Products/Release/Husen.app artifact/
-          # Finder で確実に .app として扱われるよう、ditto で ZIP 化して配布する
+          # アドホック署名（「壊れている」警告が出にくくなる場合あり）
+          codesign --force --deep --sign - artifact/Husen.app
           ditto -c -k --sequesterRsrc --keepParent artifact/Husen.app artifact/Husen-macOS.zip
 
       - name: Upload Husen-macOS.zip

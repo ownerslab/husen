@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 /// 常に最前面（F-01）・ウィンドウレベル設定
-final class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard let window = NSApplication.shared.windows.first else { return }
         setupWindow(window)
@@ -10,7 +10,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         bringWindowToFront(window)
     }
 
-    // Dock のアイコンをクリックしたときにウィンドウを前面に出す
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         guard let window = sender.windows.first else { return true }
         setupWindow(window)
@@ -19,12 +18,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        // 閉じるボタンでウィンドウを破棄しない。終了は ⌘Q または メニュー「Husen → 終了」
+        return false
+    }
+
     private func setupWindow(_ window: NSWindow) {
+        window.delegate = self
         window.level = .floating
         window.collectionBehavior = [.canJoinAllSpaces]
         window.isRestorable = false
-        // 閉じるボタンを無効化＝ウィンドウを破棄しない。終了は ⌘Q または メニュー「Husen → 終了」
-        window.styleMask = [.titled, .miniaturizable, .resizable]
         NSApp.setActivationPolicy(.regular)
     }
 
