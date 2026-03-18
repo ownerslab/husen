@@ -6,7 +6,7 @@ struct ContentView: View {
     @StateObject private var store = ClipboardStore.shared
     @State private var selectedId: ClipItem.ID?
     @State private var manualInput = ""
-    @Environment(\.editMode) private var editMode
+    @State private var draggedId: ClipItem.ID?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -16,16 +16,9 @@ struct ContentView: View {
                     .font(.headline)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Button(editMode?.wrappedValue.isEditing == true ? "完了" : "編集") {
-                    withAnimation(.snappy) {
-                        if editMode?.wrappedValue.isEditing == true {
-                            editMode?.wrappedValue = .inactive
-                        } else {
-                            editMode?.wrappedValue = .active
-                        }
-                    }
-                }
-                .buttonStyle(.borderless)
+                Text("ドラッグで並べ替え")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
@@ -58,6 +51,15 @@ struct ContentView: View {
                             selectedId = item.id
                             store.copyToPasteboard(item)
                         }
+                        .onDrag {
+                            draggedId = item.id
+                            return NSItemProvider(object: item.id.uuidString as NSString)
+                        }
+                        .onDrop(of: [.text], delegate: ClipReorderDropDelegate(
+                            overItemId: item.id,
+                            draggedId: $draggedId,
+                            store: store
+                        ))
                         .contextMenu {
                             Button("クリップボードに戻す") {
                                 store.copyToPasteboard(item)
@@ -67,11 +69,30 @@ struct ContentView: View {
                             }
                         }
                 }
-                .onMove(perform: store.move)
             }
             .listStyle(.plain)
         }
         .frame(minWidth: 280, minHeight: 200)
+    }
+}
+
+private struct ClipReorderDropDelegate: DropDelegate {
+    let overItemId: ClipItem.ID
+    @Binding var draggedId: ClipItem.ID?
+    let store: ClipboardStore
+
+    func dropEntered(info: DropInfo) {
+        guard let draggedId, draggedId != overItemId else { return }
+        store.move(draggedId: draggedId, overId: overItemId)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        draggedId = nil
+        return true
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DropProposal(operation: .move)
     }
 }
 

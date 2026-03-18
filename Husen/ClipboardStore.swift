@@ -66,6 +66,20 @@ final class ClipboardStore: ObservableObject {
         save()
     }
 
+    /// ドラッグ&ドロップによる並び替え（macOS向け）
+    func move(draggedId: ClipItem.ID, overId: ClipItem.ID) {
+        guard draggedId != overId,
+              let fromIndex = items.firstIndex(where: { $0.id == draggedId }),
+              let toIndex = items.firstIndex(where: { $0.id == overId })
+        else { return }
+
+        var updated = items
+        let moved = updated.remove(at: fromIndex)
+        updated.insert(moved, at: toIndex)
+        items = updated
+        save()
+    }
+
     func delete(at offsets: IndexSet) {
         items.remove(atOffsets: offsets)
         save()
