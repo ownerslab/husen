@@ -12,11 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Release
+      - name: Build Release (no code signing)
         run: |
           xcodebuild -scheme Husen -configuration Release \
             -destination 'platform=macOS' \
             -derivedDataPath build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
             build
 
       - name: Copy .app to artifact
