@@ -57,17 +57,7 @@ struct ContentView: View {
                     headerIcon("plus") { MemoStore.shared.addMemo() }
                 }
 
-                Menu {
-                    ForEach(ThemeStore.Theme.allCases, id: \.self) { t in
-                        Button(t.displayName) { theme.current = t }
-                    }
-                } label: {
-                    Image(systemName: "paintpalette")
-                        .font(.system(size: 9))
-                        .frame(width: 28, height: 24)
-                }
-                .menuStyle(.borderlessButton)
-                .fixedSize()
+                ThemePaletteButton(theme: theme)
 
                 if currentTab == .clips {
                     headerIcon("trash") {
@@ -101,7 +91,7 @@ struct ContentView: View {
     private func headerIcon(_ systemName: String, action: @escaping () -> Void) -> some View {
         Image(systemName: systemName)
             .font(.system(size: 9, weight: .medium))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(theme.headerIconColor)
             .frame(width: 28, height: 24)
             .contentShape(Rectangle())
             .onTapGesture { action() }
@@ -181,6 +171,42 @@ struct ClipRowView: View {
         }
         .padding(.vertical, 4)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+/// NSMenu でポップアップするパレットボタン（Menu の borderlessButton スタイルが色を上書きする問題を回避）
+private struct ThemePaletteButton: View {
+    @ObservedObject var theme: ThemeStore
+
+    var body: some View {
+        Image(systemName: "paintpalette")
+            .font(.system(size: 9, weight: .medium))
+            .foregroundStyle(theme.headerIconColor)
+            .frame(width: 28, height: 24)
+            .contentShape(Rectangle())
+            .onTapGesture { showMenu() }
+    }
+
+    private func showMenu() {
+        let menu = NSMenu()
+        for t in ThemeStore.Theme.allCases {
+            let item = NSMenuItem(title: t.displayName, action: #selector(ThemeMenuTarget.select(_:)), keyEquivalent: "")
+            item.representedObject = t.rawValue
+            item.target = ThemeMenuTarget.shared
+            menu.addItem(item)
+        }
+        if let event = NSApp.currentEvent {
+            NSMenu.popUpContextMenu(menu, with: event, for: NSApp.keyWindow?.contentView ?? NSView())
+        }
+    }
+}
+
+private class ThemeMenuTarget: NSObject {
+    static let shared = ThemeMenuTarget()
+    @objc func select(_ sender: NSMenuItem) {
+        guard let raw = sender.representedObject as? String,
+              let t = ThemeStore.Theme(rawValue: raw) else { return }
+        ThemeStore.shared.current = t
     }
 }
 

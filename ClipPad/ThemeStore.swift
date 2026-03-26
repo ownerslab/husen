@@ -75,8 +75,8 @@ final class ThemeStore: ObservableObject {
     var textTertiary: Color {
         switch current {
         case .system: return Color.secondary.opacity(0.8)
-        case .dark: return Color.white.opacity(0.6)
-        case .cockpit: return Color(red: 0.4, green: 0.7, blue: 0.3)
+        case .dark: return Color.white.opacity(0.85)
+        case .cockpit: return Color(red: 0.5, green: 0.85, blue: 0.4)
         case .pastelPink: return Color(red: 0.65, green: 0.5, blue: 0.55)
         case .pastelLavender: return Color(red: 0.5, green: 0.45, blue: 0.65)
         case .pastelMint: return Color(red: 0.4, green: 0.6, blue: 0.55)
@@ -117,6 +117,18 @@ final class ThemeStore: ObservableObject {
         case .pastelLavender: return Color(red: 0.35, green: 0.32, blue: 0.5)
         case .pastelMint: return Color(red: 0.28, green: 0.45, blue: 0.4)
         case .pastelPeach: return Color(red: 0.48, green: 0.38, blue: 0.35)
+        }
+    }
+
+    var headerIconColor: Color {
+        switch current {
+        case .system: return Color.secondary
+        case .dark: return Color.white
+        case .cockpit: return Color(red: 0.7, green: 1.0, blue: 0.5)
+        case .pastelPink: return Color(red: 0.65, green: 0.5, blue: 0.55)
+        case .pastelLavender: return Color(red: 0.5, green: 0.45, blue: 0.65)
+        case .pastelMint: return Color(red: 0.4, green: 0.6, blue: 0.55)
+        case .pastelPeach: return Color(red: 0.65, green: 0.5, blue: 0.45)
         }
     }
 

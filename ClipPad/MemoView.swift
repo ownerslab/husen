@@ -73,7 +73,7 @@ struct MemoView: View {
                 } label: {
                     Image(systemName: "trash")
                         .font(.system(size: 8))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(theme.headerIconColor)
                 }
                 .buttonStyle(.plain)
                 .help("このメモを削除")
