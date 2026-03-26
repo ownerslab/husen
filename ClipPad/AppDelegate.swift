@@ -4,6 +4,7 @@ import SwiftUI
 /// 常に最前面（F-01）・純正 Stickies 風枠なしウィンドウ
 /// nonactivatingPanel で他アプリのフォーカスを奪わない
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    static weak var panel: BorderlessPanel?
     private var mainWindow: BorderlessPanel?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -15,7 +16,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func createMainWindow() {
         let content = ContentView()
-            .frame(minWidth: 280, minHeight: 200)
+            .frame(minWidth: 140, minHeight: 80)
         let hosting = NSHostingView(rootView: content)
 
         let panel = BorderlessPanel(
@@ -33,20 +34,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         panel.backgroundColor = .windowBackgroundColor
         panel.hasShadow = true
         panel.isOpaque = true
-        panel.minSize = NSSize(width: 280, height: 200)
-        // フローティングパネルとして表示（フォーカスは奪わない）
+        panel.minSize = NSSize(width: 140, height: 80)
         panel.orderFront(nil)
         mainWindow = panel
+        AppDelegate.panel = panel
     }
 
-    /// アクセシビリティ権限の確認・リクエスト（CGEvent送信に必要）
     private func requestAccessibilityIfNeeded() {
         let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary
         AXIsProcessTrustedWithOptions(options)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        return true
+        return false
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {

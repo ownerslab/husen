@@ -14,45 +14,47 @@ struct ContentView: View {
     @State private var selectedId: ClipItem.ID?
     @State private var draggedId: ClipItem.ID?
     @State private var currentTab: AppTab = .clips
+    @State private var isMinimized: Bool = false
+    @State private var restoreSize: NSSize = NSSize(width: 300, height: 280)
 
     var body: some View {
         VStack(spacing: 0) {
-            // 純正 Stickies 風：極薄ヘッダー（枠なしなのでコンテンツ最大化）
-            HStack(spacing: 4) {
-                Button {
-                    NSApplication.shared.keyWindow?.close()
-                } label: {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 8, weight: .medium))
-                        .foregroundStyle(.secondary)
+            // ヘッダー
+            HStack(spacing: 0) {
+                headerIcon("xmark") {
+                    AppDelegate.panel?.orderOut(nil)
                 }
-                .buttonStyle(.plain)
-                .help("閉じる")
+                headerIcon(isMinimized ? "arrow.up.left.and.arrow.down.right" : "minus") {
+                    if let w = AppDelegate.panel {
+                        if isMinimized {
+                            w.setFrame(NSRect(origin: w.frame.origin, size: restoreSize), display: true, animate: true)
+                            isMinimized = false
+                        } else {
+                            restoreSize = w.frame.size
+                            w.setFrame(NSRect(origin: w.frame.origin, size: w.minSize), display: true, animate: true)
+                            isMinimized = true
+                        }
+                    }
+                }
 
                 // タブ切替
                 ForEach(AppTab.allCases, id: \.self) { tab in
-                    Button {
-                        currentTab = tab
-                    } label: {
-                        Text(tab.rawValue)
-                            .font(.system(size: 9, weight: currentTab == tab ? .bold : .regular))
-                            .foregroundStyle(currentTab == tab ? theme.accentColor : theme.textTertiary)
-                    }
-                    .buttonStyle(.plain)
+                    Text(tab.rawValue)
+                        .font(.system(size: 9, weight: currentTab == tab ? .bold : .regular))
+                        .foregroundStyle(currentTab == tab ? theme.accentColor : theme.textTertiary)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 6)
+                        .contentShape(Rectangle())
+                        .onTapGesture { currentTab = tab }
                 }
 
                 Spacer()
 
                 if currentTab == .clips {
-                    // 「＋」ボタン：前面アプリの選択テキストを取り込み（マウスだけコピー）
-                    Button {
-                        store.copyFromFrontApp()
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.system(size: 8, weight: .medium))
-                    }
-                    .buttonStyle(.borderless)
-                    .help("選択テキストを取り込み (Cmd+Cを送信)")
+                    headerIcon("plus") { store.copyFromFrontApp() }
+                }
+                if currentTab == .memo {
+                    headerIcon("plus") { MemoStore.shared.addMemo() }
                 }
 
                 Menu {
@@ -61,37 +63,23 @@ struct ContentView: View {
                     }
                 } label: {
                     Image(systemName: "paintpalette")
-                        .font(.system(size: 8))
+                        .font(.system(size: 9))
+                        .frame(width: 28, height: 24)
                 }
                 .menuStyle(.borderlessButton)
                 .fixedSize()
-                .help("テーマを変更")
 
                 if currentTab == .clips {
-                    Button {
+                    headerIcon("trash") {
                         ClipboardStore.shared.clearAll()
                         selectedId = nil
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.system(size: 8))
                     }
-                    .buttonStyle(.borderless)
-                    .help("一括削除")
                 }
-
                 if currentTab == .memo {
-                    Button {
-                        MemoStore.shared.text = ""
-                    } label: {
-                        Image(systemName: "trash")
-                            .font(.system(size: 8))
-                    }
-                    .buttonStyle(.borderless)
-                    .help("メモをクリア")
+                    headerIcon("trash") { MemoStore.shared.deleteAll() }
                 }
             }
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2)
+            .padding(.horizontal, 2)
             .background(theme.headerBackground)
 
             Divider()
@@ -106,7 +94,17 @@ struct ContentView: View {
             }
         }
         .background(theme.listBackground)
-        .frame(minWidth: 280, minHeight: 200)
+        .frame(minWidth: 140, minHeight: 80)
+    }
+
+    /// ヘッダー用アイコンボタン（onTapGesture で nonactivatingPanel でも確実動作）
+    private func headerIcon(_ systemName: String, action: @escaping () -> Void) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: 9, weight: .medium))
+            .foregroundStyle(.secondary)
+            .frame(width: 28, height: 24)
+            .contentShape(Rectangle())
+            .onTapGesture { action() }
     }
 
     /// クリップ履歴一覧（左クリックで前面アプリにペースト / ドラッグで並べ替え）
