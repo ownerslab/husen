@@ -185,7 +185,44 @@
 
 ---
 
-## 6. 今後やりたい改善メモ
+## 6. Xcode なしでのローカルビルド（現在の方法）
+
+現在 PC のストレージ不足により **Xcode 未インストール** の状態で運用中。
+`swiftc`（Command Line Tools 付属）で直接ビルドし、既存の `.app` バンドルにバイナリを上書きする方式を採っている。
+
+### 6.1 ビルドコマンド
+
+```bash
+swiftc -parse-as-library \
+  -framework Cocoa -framework SwiftUI -framework UniformTypeIdentifiers \
+  -target arm64-apple-macosx13.0 \
+  -o /tmp/ClipPad \
+  ClipPad/*.swift
+```
+
+### 6.2 アプリへの反映と起動
+
+```bash
+# 実行中なら停止
+killall ClipPad 2>/dev/null
+
+# ビルド済みバイナリを .app にコピー
+cp /tmp/ClipPad /Applications/ClipPad.app/Contents/MacOS/ClipPad
+
+# 隔離解除して起動
+xattr -dr com.apple.quarantine "/Applications/ClipPad.app"
+open "/Applications/ClipPad.app"
+```
+
+### 6.3 注意点
+
+- `.app` バンドル（Info.plist, Resources/AppIcon.icns, Assets.car）は GitHub Actions で過去にビルドしたものをそのまま流用している
+- アイコンや Info.plist を変更したい場合は、GitHub Actions でフルビルドするか、手動でバンドル内のファイルを差し替える
+- Xcode を入れるメリット: コード署名・公証（notarization）が可能になり、他人に配布する際の「開発元不明」警告がなくなる
+
+---
+
+## 7. 今後やりたい改善メモ
 
 - アイコンが Dock に表示されない場合:
   - macOS がアイコンをキャッシュしている可能性あり。以下でキャッシュをクリア:
@@ -201,15 +238,15 @@
 
 ---
 
-## 7. PC 買い替え時の復元手順
+## 8. PC 買い替え時の復元手順
 
-### 7.1 結論
+### 8.1 結論
 
 - GitHub の `ownerslab/clippad` リポジトリと Actions が残っていれば、**新しい Mac でも同じ ClipPad を再度使える**。
 - 基本の流れは  
   **「GitHub から Artifact をダウンロード → ClipPad.app を解凍 → /Applications に入れる」** だけ。
 
-### 7.2 新しい Mac での最小手順（Xcode 不要）
+### 8.2 新しい Mac での最小手順（Xcode 不要）
 
 1. ブラウザで `ownerslab/clippad` を開く。
 2. **Actions タブ** → 最新の成功ジョブ `CI: distribute ClipPad.app as ditto zip` を開く。
@@ -228,7 +265,7 @@
    - もしくは Spotlight（⌘Space）で `ClipPad` と入力 → Enter
    - Dock にピン留めしておけば Dock からワンクリック起動。
 
-### 7.3 ソースコードごと持っていきたい場合（開発も続けるとき）
+### 8.3 ソースコードごと持っていきたい場合（開発も続けるとき）
 
 1. 新しい Mac でターミナルを開き、任意のフォルダ（例: デスクトップ）へ移動:
    ```bash
