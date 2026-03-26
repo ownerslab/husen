@@ -1,12 +1,19 @@
 import SwiftUI
 import AppKit
 
+/// タブ種別
+enum AppTab: String, CaseIterable {
+    case clips = "履歴"
+    case memo  = "メモ"
+}
+
 /// メインの一覧UI（要件 F-04, F-05, F-07 / 案A: 一覧形式）
 struct ContentView: View {
     @StateObject private var store = ClipboardStore.shared
     @ObservedObject private var theme = ThemeStore.shared
     @State private var selectedId: ClipItem.ID?
     @State private var draggedId: ClipItem.ID?
+    @State private var currentTab: AppTab = .clips
 
     var body: some View {
         VStack(spacing: 0) {
@@ -21,13 +28,33 @@ struct ContentView: View {
                 }
                 .buttonStyle(.plain)
                 .help("閉じる")
-                Text("ClipPad")
-                    .font(.system(size: 9, weight: .semibold))
-                    .foregroundStyle(theme.textSecondary)
-                Text("仮置き場")
-                    .font(.system(size: 8))
-                    .foregroundStyle(theme.textTertiary)
+
+                // タブ切替
+                ForEach(AppTab.allCases, id: \.self) { tab in
+                    Button {
+                        currentTab = tab
+                    } label: {
+                        Text(tab.rawValue)
+                            .font(.system(size: 9, weight: currentTab == tab ? .bold : .regular))
+                            .foregroundStyle(currentTab == tab ? theme.accentColor : theme.textTertiary)
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 Spacer()
+
+                if currentTab == .clips {
+                    // 「＋」ボタン：前面アプリの選択テキストを取り込み（マウスだけコピー）
+                    Button {
+                        store.copyFromFrontApp()
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.system(size: 8, weight: .medium))
+                    }
+                    .buttonStyle(.borderless)
+                    .help("選択テキストを取り込み (Cmd+Cを送信)")
+                }
+
                 Menu {
                     ForEach(ThemeStore.Theme.allCases, id: \.self) { t in
                         Button(t.displayName) { theme.current = t }
@@ -39,15 +66,29 @@ struct ContentView: View {
                 .menuStyle(.borderlessButton)
                 .fixedSize()
                 .help("テーマを変更")
-                Button {
-                    ClipboardStore.shared.clearAll()
-                    selectedId = nil
-                } label: {
-                    Image(systemName: "trash")
-                        .font(.system(size: 8))
+
+                if currentTab == .clips {
+                    Button {
+                        ClipboardStore.shared.clearAll()
+                        selectedId = nil
+                    } label: {
+                        Image(systemName: "trash")
+                            .font(.system(size: 8))
+                    }
+                    .buttonStyle(.borderless)
+                    .help("一括削除")
                 }
-                .buttonStyle(.borderless)
-                .help("一括削除")
+
+                if currentTab == .memo {
+                    Button {
+                        MemoStore.shared.text = ""
+                    } label: {
+                        Image(systemName: "trash")
+                            .font(.system(size: 8))
+                    }
+                    .buttonStyle(.borderless)
+                    .help("メモをクリア")
+                }
             }
             .padding(.horizontal, 6)
             .padding(.vertical, 2)
@@ -56,40 +97,54 @@ struct ContentView: View {
             Divider()
                 .background(theme.dividerColor)
 
-            // 一覧（クリックでクリップボードに戻す / ドラッグで並べ替え）
-            List(selection: $selectedId) {
-                ForEach(store.items) { item in
-                    ClipRowView(item: item, isSelected: selectedId == item.id, theme: theme)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            selectedId = item.id
-                            store.copyToPasteboard(item)
-                        }
-                        .onDrag {
-                            draggedId = item.id
-                            return NSItemProvider(object: item.id.uuidString as NSString)
-                        }
-                        .onDrop(of: [.text], delegate: ClipReorderDropDelegate(
-                            overItemId: item.id,
-                            draggedId: $draggedId,
-                            store: store
-                        ))
-                        .contextMenu {
-                            Button("クリップボードに戻す") {
-                                store.copyToPasteboard(item)
-                            }
-                            Button("削除", role: .destructive) {
-                                store.deleteItem(item)
-                            }
-                        }
-                }
+            // タブに応じたコンテンツ
+            switch currentTab {
+            case .clips:
+                clipListView
+            case .memo:
+                MemoView()
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .background(theme.listBackground)
         }
         .background(theme.listBackground)
         .frame(minWidth: 280, minHeight: 200)
+    }
+
+    /// クリップ履歴一覧（左クリックで前面アプリにペースト / ドラッグで並べ替え）
+    private var clipListView: some View {
+        List(selection: $selectedId) {
+            ForEach(store.items) { item in
+                ClipRowView(item: item, isSelected: selectedId == item.id, theme: theme)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        selectedId = item.id
+                        store.pasteToFrontApp(item)
+                    }
+                    .onDrag {
+                        draggedId = item.id
+                        return NSItemProvider(object: item.id.uuidString as NSString)
+                    }
+                    .onDrop(of: [.text], delegate: ClipReorderDropDelegate(
+                        overItemId: item.id,
+                        draggedId: $draggedId,
+                        store: store
+                    ))
+                    .contextMenu {
+                        Button("クリップボードにコピーのみ") {
+                            store.copyToPasteboard(item)
+                        }
+                        Button("前面アプリにペースト") {
+                            store.pasteToFrontApp(item)
+                        }
+                        Divider()
+                        Button("削除", role: .destructive) {
+                            store.deleteItem(item)
+                        }
+                    }
+            }
+        }
+        .listStyle(.plain)
+        .scrollContentBackground(.hidden)
+        .background(theme.listBackground)
     }
 }
 
@@ -131,7 +186,8 @@ struct ClipRowView: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .frame(width: 320, height: 400)
-}
+// Preview は Xcode 環境でのみ利用可能
+// #Preview {
+//     ContentView()
+//         .frame(width: 320, height: 400)
+// }

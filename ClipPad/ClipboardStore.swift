@@ -60,6 +60,52 @@ final class ClipboardStore: ObservableObject {
         changeCount = pasteboard.changeCount
     }
 
+    /// アイテムをクリップボードにセットし、前面アプリに Cmd+V を送信（マウスだけペースト）
+    func pasteToFrontApp(_ item: ClipItem) {
+        copyToPasteboard(item)
+        // クリップボード反映を待ってからキーイベント送信
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            Self.simulatePaste()
+        }
+    }
+
+    /// 前面アプリの選択テキストを Cmd+C で取り込み（マウスだけコピー）
+    func copyFromFrontApp() {
+        Self.simulateCopy()
+        // コピー完了を待ってからクリップボードを確認
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+            self?.checkPasteboard()
+        }
+    }
+
+    // MARK: - CGEvent キーストロークシミュレーション
+
+    /// Cmd+V を前面アプリに送信
+    private static func simulatePaste() {
+        guard AXIsProcessTrusted() else { return }
+        let src = CGEventSource(stateID: .hidSystemState)
+        // V key = 0x09
+        guard let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x09, keyDown: true),
+              let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x09, keyDown: false) else { return }
+        keyDown.flags = CGEventFlags.maskCommand
+        keyUp.flags = CGEventFlags.maskCommand
+        keyDown.post(tap: CGEventTapLocation.cghidEventTap)
+        keyUp.post(tap: CGEventTapLocation.cghidEventTap)
+    }
+
+    /// Cmd+C を前面アプリに送信
+    private static func simulateCopy() {
+        guard AXIsProcessTrusted() else { return }
+        let src = CGEventSource(stateID: .hidSystemState)
+        // C key = 0x08
+        guard let keyDown = CGEvent(keyboardEventSource: src, virtualKey: 0x08, keyDown: true),
+              let keyUp = CGEvent(keyboardEventSource: src, virtualKey: 0x08, keyDown: false) else { return }
+        keyDown.flags = CGEventFlags.maskCommand
+        keyUp.flags = CGEventFlags.maskCommand
+        keyDown.post(tap: CGEventTapLocation.cghidEventTap)
+        keyUp.post(tap: CGEventTapLocation.cghidEventTap)
+    }
+
     /// 並び順を変更（要件 F-07）
     func move(from source: IndexSet, to destination: Int) {
         items.move(fromOffsets: source, toOffset: destination)
