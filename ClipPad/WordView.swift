@@ -6,6 +6,8 @@ struct WordView: View {
     @ObservedObject private var store = WordStore.shared
     @ObservedObject private var theme = ThemeStore.shared
     @State private var editingId: WordItem.ID?
+    @State private var selectedId: WordItem.ID?
+    @FocusState private var focusedId: UUID?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,7 +64,7 @@ struct WordView: View {
             // NO列
             Text("\(index)")
                 .font(theme.rowFont)
-                .foregroundColor(theme.textTertiary)
+                .foregroundColor(selectedId == word.id ? theme.accentColor : theme.textTertiary)
                 .frame(width: 28, alignment: .center)
 
             Divider()
@@ -76,17 +78,19 @@ struct WordView: View {
                     set: { store.updatePhrase(id: word.id, phrase: $0) }
                 ))
                 .font(theme.rowFont)
-                .foregroundColor(theme.rowTextColor)
+                .foregroundColor(theme.accentColor)
                 .textFieldStyle(.plain)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 8)
+                .focused($focusedId, equals: word.id)
                 .onSubmit {
                     editingId = nil
+                    focusedId = nil
                 }
             } else {
                 Text(word.phrase.isEmpty ? " " : word.phrase)
                     .font(theme.rowFont)
-                    .foregroundColor(theme.rowTextColor)
+                    .foregroundColor(selectedId == word.id ? theme.accentColor : theme.rowTextColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 8)
             }
@@ -94,12 +98,17 @@ struct WordView: View {
         .padding(.vertical, 2)
         .contentShape(Rectangle())
         .onTapGesture(count: 2) {
+            selectedId = word.id
             editingId = word.id
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                focusedId = word.id
+            }
         }
         .onTapGesture(count: 1) {
             if editingId == word.id {
                 // 編集中なら何もしない
             } else {
+                selectedId = word.id
                 pastePhrase(word)
             }
         }
