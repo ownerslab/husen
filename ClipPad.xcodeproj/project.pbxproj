@@ -17,6 +17,9 @@
 		HUSEN008 /* BorderlessWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN108; };
 		HUSEN009 /* MemoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN109; };
 		HUSEN010 /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN110; };
+		HUSEN011 /* WordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN111; };
+		HUSEN012 /* WordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN112; };
+		HUSEN013 /* WordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = HUSEN113; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,9 @@
 		HUSEN108 /* BorderlessWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderlessWindow.swift; sourceTree = "<group>"; };
 		HUSEN109 /* MemoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoStore.swift; sourceTree = "<group>"; };
 		HUSEN110 /* MemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoView.swift; sourceTree = "<group>"; };
+		HUSEN111 /* WordItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordItem.swift; sourceTree = "<group>"; };
+		HUSEN112 /* WordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordStore.swift; sourceTree = "<group>"; };
+		HUSEN113 /* WordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +70,9 @@
 				HUSEN106 /* ThemeStore.swift */,
 				HUSEN109 /* MemoStore.swift */,
 				HUSEN110 /* MemoView.swift */,
+				HUSEN111 /* WordItem.swift */,
+				HUSEN112 /* WordStore.swift */,
+				HUSEN113 /* WordView.swift */,
 				HUSEN107 /* Assets.xcassets */,
 				HUSEN303 /* Info.plist */,
 			);
@@ -152,6 +161,9 @@
 				HUSEN008 /* BorderlessWindow.swift in Sources */,
 				HUSEN009 /* MemoStore.swift in Sources */,
 				HUSEN010 /* MemoView.swift in Sources */,
+				HUSEN011 /* WordItem.swift in Sources */,
+				HUSEN012 /* WordStore.swift in Sources */,
+				HUSEN013 /* WordView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

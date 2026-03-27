@@ -3,8 +3,9 @@ import AppKit
 
 /// タブ種別
 enum AppTab: String, CaseIterable {
-    case clips = "履歴"
-    case memo  = "メモ"
+    case clips = "仮置"
+    case memo  = "付箋"
+    case word  = "辞書"
 }
 
 /// メインの一覧UI（要件 F-04, F-05, F-07 / 案A: 一覧形式）
@@ -56,6 +57,9 @@ struct ContentView: View {
                 if currentTab == .memo {
                     headerIcon("plus") { MemoStore.shared.addMemo() }
                 }
+                if currentTab == .word {
+                    headerIcon("plus") { WordStore.shared.addWord() }
+                }
 
                 ThemePaletteButton(theme: theme)
 
@@ -67,6 +71,9 @@ struct ContentView: View {
                 }
                 if currentTab == .memo {
                     headerIcon("trash") { MemoStore.shared.deleteAll() }
+                }
+                if currentTab == .word {
+                    headerIcon("trash") { WordStore.shared.deleteAll() }
                 }
             }
             .padding(.horizontal, 2)
@@ -81,6 +88,8 @@ struct ContentView: View {
                 clipListView
             case .memo:
                 MemoView()
+            case .word:
+                WordView()
             }
         }
         .background(theme.listBackground)
