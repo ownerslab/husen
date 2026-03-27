@@ -34,7 +34,7 @@ struct WordView: View {
             Divider().background(theme.dividerColor)
 
             // 単語リスト
-            List {
+            List(selection: $selectedId) {
                 ForEach(Array(store.sortedWords.enumerated()), id: \.element.id) { index, word in
                     wordRow(word: word, index: index + 1)
                         .contextMenu {

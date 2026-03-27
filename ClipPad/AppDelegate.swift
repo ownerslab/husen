@@ -12,6 +12,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.activate(ignoringOtherApps: true)
         createMainWindow()
         requestAccessibilityIfNeeded()
+        // SwiftUI Settings の空ウィンドウを閉じる
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            for window in NSApp.windows where window !== self.mainWindow {
+                window.close()
+            }
+        }
     }
 
     private func createMainWindow() {
