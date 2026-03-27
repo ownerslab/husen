@@ -58,7 +58,10 @@ struct ContentView: View {
                     headerIcon("plus") { MemoStore.shared.addMemo() }
                 }
                 if currentTab == .word {
-                    headerIcon("plus") { WordStore.shared.addWord() }
+                    headerIcon("plus") {
+                        let newId = WordStore.shared.addWord()
+                        NotificationCenter.default.post(name: .wordEditRequest, object: newId)
+                    }
                 }
 
                 ThemePaletteButton(theme: theme)

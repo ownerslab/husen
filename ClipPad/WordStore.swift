@@ -18,10 +18,12 @@ final class WordStore: ObservableObject {
         words.sorted { $0.reading.localizedCompare($1.reading) == .orderedAscending }
     }
 
-    func addWord(reading: String = "", phrase: String = "") {
+    @discardableResult
+    func addWord(reading: String = "", phrase: String = "") -> UUID {
         let word = WordItem(reading: reading, phrase: phrase)
         words.append(word)
         save()
+        return word.id
     }
 
     func updateReading(id: UUID, reading: String) {
