@@ -108,9 +108,10 @@ struct ContentView: View {
 
     /// クリップ履歴一覧（左クリックで前面アプリにペースト / ドラッグで並べ替え）
     private var clipListView: some View {
-        List(selection: $selectedId) {
+        List {
             ForEach(store.items) { item in
                 ClipRowView(item: item, isSelected: selectedId == item.id, theme: theme)
+                    .listRowBackground(selectedId == item.id ? Color.accentColor : Color.clear)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         selectedId = item.id
@@ -176,7 +177,7 @@ struct ClipRowView: View {
                 .font(theme.rowFont)
                 .lineLimit(2)
                 .truncationMode(.tail)
-                .foregroundColor(isSelected ? theme.accentColor : theme.rowTextColor)
+                .foregroundColor(isSelected ? .white : theme.rowTextColor)
         }
         .padding(.vertical, 4)
         .frame(maxWidth: .infinity, alignment: .leading)

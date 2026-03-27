@@ -12,12 +12,6 @@ final class BorderlessPanel: NSPanel {
         case .leftMouseDown:
             makeKey()
             super.sendEvent(event)
-        case .leftMouseUp:
-            super.sendEvent(event)
-            // クリック処理後、キーを手放す
-            DispatchQueue.main.async { [weak self] in
-                self?.resignKey()
-            }
         default:
             super.sendEvent(event)
         }

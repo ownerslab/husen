@@ -32,10 +32,11 @@ struct WordView: View {
             Divider().background(theme.dividerColor)
 
             // 単語リスト
-            List(selection: $selectedId) {
+            List {
                 ForEach(Array(store.sortedWords.enumerated()), id: \.element.id) { index, word in
                     WordRowView(word: word, index: index + 1,
                                 isSelected: selectedId == word.id, theme: theme)
+                        .listRowBackground(selectedId == word.id ? Color.accentColor : Color.clear)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             selectedId = word.id
@@ -63,7 +64,6 @@ struct WordView: View {
 
     // MARK: - アクション
 
-    /// 変換語句をクリップボードにコピーして前面アプリにペースト
     private func pastePhrase(_ word: WordItem) {
         guard !word.phrase.isEmpty else { return }
         let pb = NSPasteboard.general
@@ -74,7 +74,6 @@ struct WordView: View {
         }
     }
 
-    /// 変換語句をクリップボードにコピーのみ
     private func copyPhrase(_ word: WordItem) {
         guard !word.phrase.isEmpty else { return }
         let pb = NSPasteboard.general
@@ -82,7 +81,6 @@ struct WordView: View {
         pb.setString(word.phrase, forType: .string)
     }
 
-    /// Cmd+V を前面アプリに送信
     private func simulatePaste() {
         guard AXIsProcessTrusted() else { return }
         let src = CGEventSource(stateID: .hidSystemState)
@@ -95,7 +93,7 @@ struct WordView: View {
     }
 }
 
-/// 辞書行（仮置の ClipRowView と同じ構造）
+/// 辞書行
 struct WordRowView: View {
     let word: WordItem
     let index: Int
@@ -106,7 +104,7 @@ struct WordRowView: View {
         HStack(spacing: 0) {
             Text("\(index)")
                 .font(theme.rowFont)
-                .foregroundColor(isSelected ? theme.accentColor : theme.textTertiary)
+                .foregroundColor(isSelected ? .white : theme.textTertiary)
                 .frame(width: 28, alignment: .center)
 
             Divider()
@@ -115,7 +113,7 @@ struct WordRowView: View {
 
             Text(word.phrase.isEmpty ? " " : word.phrase)
                 .font(theme.rowFont)
-                .foregroundColor(isSelected ? theme.accentColor : theme.rowTextColor)
+                .foregroundColor(isSelected ? .white : theme.rowTextColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 8)
         }
