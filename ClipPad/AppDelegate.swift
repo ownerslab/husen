@@ -23,7 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func createMainWindow() {
         let content = ContentView()
             .frame(minWidth: 140, minHeight: 80)
-        let hosting = NSHostingView(rootView: content)
+        let hosting = FirstMouseHostingView(rootView: content)
 
         let panel = BorderlessPanel(
             contentRect: NSRect(x: 100, y: 400, width: 300, height: 280),
