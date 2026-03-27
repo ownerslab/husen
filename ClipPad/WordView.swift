@@ -11,11 +11,10 @@ struct WordView: View {
         VStack(spacing: 0) {
             // カラムヘッダー
             HStack(spacing: 0) {
-                Text("入力/読み")
+                Text("NO")
                     .font(.system(size: 9, weight: .medium))
                     .foregroundStyle(theme.textTertiary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 8)
+                    .frame(width: 28, alignment: .center)
 
                 Divider()
                     .frame(height: 14)
@@ -34,8 +33,8 @@ struct WordView: View {
 
             // 単語リスト
             List {
-                ForEach(store.sortedWords) { word in
-                    wordRow(word: word)
+                ForEach(Array(store.sortedWords.enumerated()), id: \.element.id) { index, word in
+                    wordRow(word: word, index: index + 1)
                         .contextMenu {
                             Button("変換語句をペースト") {
                                 pastePhrase(word)
@@ -58,29 +57,17 @@ struct WordView: View {
 
     // MARK: - 行表示
 
-    private func wordRow(word: WordItem) -> some View {
+    private func wordRow(word: WordItem, index: Int) -> some View {
         HStack(spacing: 0) {
-            // 読みフィールド
-            if editingId == word.id {
-                TextField("読み", text: Binding(
-                    get: { word.reading },
-                    set: { store.updateReading(id: word.id, reading: $0) }
-                ))
+            // NO列
+            Text("\(index)")
                 .font(theme.rowFont)
-                .foregroundColor(theme.rowTextColor)
-                .textFieldStyle(.plain)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-                Text(word.reading.isEmpty ? " " : word.reading)
-                    .font(theme.rowFont)
-                    .foregroundColor(theme.rowTextColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
+                .foregroundColor(theme.textTertiary)
+                .frame(width: 28, alignment: .center)
 
             Divider()
                 .frame(height: 16)
                 .background(theme.dividerColor)
-                .padding(.horizontal, 4)
 
             // 変換語句フィールド
             if editingId == word.id {
@@ -92,6 +79,7 @@ struct WordView: View {
                 .foregroundColor(theme.rowTextColor)
                 .textFieldStyle(.plain)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 8)
                 .onSubmit {
                     editingId = nil
                 }
@@ -100,6 +88,7 @@ struct WordView: View {
                     .font(theme.rowFont)
                     .foregroundColor(theme.rowTextColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 8)
             }
         }
         .padding(.vertical, 2)
