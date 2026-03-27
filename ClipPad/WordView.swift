@@ -3,6 +3,38 @@ import AppKit
 
 extension Notification.Name {
     static let wordEditRequest = Notification.Name("wordEditRequest")
+    static let wordEnterKey = Notification.Name("wordEnterKey")
+}
+
+/// Enterキーを監視してNotification発行するヘルパー
+private final class EnterKeyMonitor {
+    static let shared = EnterKeyMonitor()
+    private var monitor: Any?
+
+    var isEditing = false
+
+    func install() {
+        guard monitor == nil else { return }
+        monitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [self] event in
+            // Return/Enter key = keyCode 36 or 76
+            if event.keyCode == 36 || event.keyCode == 76 {
+                if isEditing {
+                    // 編集中はイベントをそのまま通す（TextFieldのonSubmitが処理）
+                    return event
+                }
+                NotificationCenter.default.post(name: .wordEnterKey, object: nil)
+                return nil  // イベントを消費
+            }
+            return event
+        }
+    }
+
+    func remove() {
+        if let monitor {
+            NSEvent.removeMonitor(monitor)
+        }
+        monitor = nil
+    }
 }
 
 /// 単語登録（辞書）タブ：語句の一覧管理
@@ -11,6 +43,7 @@ struct WordView: View {
     @ObservedObject private var theme = ThemeStore.shared
     @State private var selectedId: WordItem.ID?
     @State private var editingId: WordItem.ID?
+    @State private var isActive = false
     @FocusState private var focusedId: UUID?
 
     var body: some View {
@@ -45,7 +78,6 @@ struct WordView: View {
                         .contentShape(Rectangle())
                         .onTapGesture {
                             if editingId != nil {
-                                // 編集中に別の行をクリック → 編集終了
                                 editingId = nil
                                 focusedId = nil
                             }
@@ -86,22 +118,30 @@ struct WordView: View {
                     }
                 }
             }
-            .onKeyPress(.return) {
-                if let editingId {
+            .onReceive(NotificationCenter.default.publisher(for: .wordEnterKey)) { _ in
+                guard isActive else { return }
+                if editingId != nil {
                     // 編集中にEnter → 編集確定
-                    self.editingId = nil
+                    editingId = nil
                     focusedId = nil
-                    return .handled
-                }
-                if let selectedId {
+                } else if let sid = selectedId {
                     // 選択中にEnter → 編集モードに入る
-                    editingId = selectedId
+                    editingId = sid
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                        focusedId = selectedId
+                        focusedId = sid
                     }
-                    return .handled
                 }
-                return .ignored
+            }
+            .onAppear {
+                isActive = true
+                EnterKeyMonitor.shared.install()
+            }
+            .onDisappear {
+                isActive = false
+                EnterKeyMonitor.shared.remove()
+            }
+            .onChange(of: editingId) { newValue in
+                EnterKeyMonitor.shared.isEditing = (newValue != nil)
             }
         }
     }
@@ -136,6 +176,7 @@ struct WordView: View {
                 .onSubmit {
                     editingId = nil
                     focusedId = nil
+                    EnterKeyMonitor.shared.isEditing = false
                 }
             } else {
                 Text(word.phrase.isEmpty ? " " : word.phrase)
