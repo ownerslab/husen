@@ -168,7 +168,7 @@ struct WordView: View {
                     set: { store.updatePhrase(id: word.id, phrase: $0) }
                 ))
                 .font(theme.rowFont)
-                .foregroundColor(isSelected ? .white : theme.rowTextColor)
+                .foregroundColor(.black)
                 .textFieldStyle(.plain)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 8)
